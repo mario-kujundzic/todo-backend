@@ -28,4 +28,13 @@ class LoginAuth extends FormRequest
             'password' => 'required|max:255'
         ];
     }
+
+    public function messages() 
+    {
+        return [
+            'email.required' => 'You must enter your email!',
+            'email.email' => 'You must enter a valid email address!',
+            'password.required' => 'You must enter your password!'
+        ];
+    }
 }
