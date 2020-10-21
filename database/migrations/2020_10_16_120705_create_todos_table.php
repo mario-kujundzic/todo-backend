@@ -19,7 +19,7 @@ class CreateTodosTable extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->integer('priority');
-            $table->boolean('completed');
+            $table->boolean('completed')->default(false);
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateTodosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('todo');
+        Schema::dropIfExists('todos');
     }
 }
