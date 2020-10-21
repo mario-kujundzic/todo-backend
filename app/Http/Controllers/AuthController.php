@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginAuth;
+use App\Http\Requests\Auth\LoginAuthRequest;
 
 class AuthController extends Controller
 {
@@ -23,7 +23,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(LoginAuth $request)
+    public function login(LoginAuthRequest $request)
     {
         $credentials = $request->validated();
         if (! $token = Auth::attempt($credentials)) {

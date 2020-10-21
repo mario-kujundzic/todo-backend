@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Todo;
 
-use App\Models\Todo;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTodo extends FormRequest
+class StoreTodoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,12 +13,7 @@ class UpdateTodo extends FormRequest
      */
     public function authorize()
     {
-        $todo = Todo::find($this->route('todo'));
-        return $todo && $this->user()->can('update', $todo);
-    }
-
-    public function validationData() {
-        return $this->all() + $this->route()->parameters();
+        return true;
     }
 
     /**
@@ -30,28 +24,20 @@ class UpdateTodo extends FormRequest
     public function rules()
     {
         return [
-            'todo' => 'required|exists:todos,id',
             'title' => 'required|max:255',
             'description' => 'required|max:255',
-            'priority' => 'required|integer',
-            'completed' => 'required|boolean'
+            'priority' => 'required|integer'
         ];
     }
     public function messages() 
     {
         return [
-            'todo.integer' => 'Id must be a number!',
-            'todo.required' => 'Id is required!',
-            'todo.exists' => 'Entered todo does not exist',
             'title.required' => 'Title is required!',
             'title.max' => 'Title cannot be longer than 255 letters!',
             'description.required' => 'Description is required!',
             'description.max' => 'Description cannot be longer than 255 letters!',
             'priority.max' => 'Priority is required!',
-            'priority.max' => 'Priority must be number from 0-2!',
-            'completed.required' => 'Completion must be selected!',
-            'completed.boolean' => 'Completion must be a boolean!'
+            'priority.integer' => 'Priority must be number from 0-2!'
         ];
     }
-
 }

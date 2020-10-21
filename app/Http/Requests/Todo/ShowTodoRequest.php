@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Todo;
 
 use App\Models\Todo;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ShowTodo extends FormRequest
+class ShowTodoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

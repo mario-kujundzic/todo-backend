@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Todo;
 
 use App\Models\Todo;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteTodo extends FormRequest
+class DeleteTodoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

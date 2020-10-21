@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DeleteTodo;
-use App\Http\Requests\ShowTodo;
-use App\Http\Requests\StoreTodo;
-use App\Http\Requests\UpdateTodo;
+use App\Http\Requests\Todo\DeleteTodoRequest;
+use App\Http\Requests\Todo\ShowTodoRequest;
+use App\Http\Requests\Todo\StoreTodoRequest;
+use App\Http\Requests\Todo\UpdateTodoRequest;
 use App\Models\Todo;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
@@ -35,11 +34,10 @@ class TodoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTodo $request)
+    public function store(StoreTodoRequest $request)
     {
         $validated = $request->validated();
         $todo = Todo::create($validated + ['user_id' => Auth::user()->id, 'completed' => false]);
-        error_log($todo);
         $todo->save();
         return response()->json('Successfully created todo!');
     }
@@ -50,7 +48,7 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ShowTodo $request, $id)
+    public function show(ShowTodoRequest $request, $id)
     {
         $todo = Todo::all()->find($id);
         return response()->json($todo);
@@ -63,7 +61,7 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTodo $request, $todo)
+    public function update(UpdateTodoRequest $request, $todo)
     {
         $validated = $request->validated();
         $todo = Todo::all()->find($todo);
@@ -81,7 +79,7 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DeleteTodo $request, $id)
+    public function destroy(DeleteTodoRequest $request, $id)
     {
         $todo = Todo::all()->find($id);
         $todo->delete();
