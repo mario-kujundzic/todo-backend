@@ -6,9 +6,8 @@ use App\Http\Requests\Todo\DeleteTodoRequest;
 use App\Http\Requests\Todo\ShowTodoRequest;
 use App\Http\Requests\Todo\StoreTodoRequest;
 use App\Http\Requests\Todo\UpdateTodoRequest;
-use App\Models\Todo;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use App\Services\TodoService;
+use Exception;
 
 class TodoController extends Controller
 {
@@ -24,8 +23,8 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $user = User::all()->find(Auth::user()->id);
-        return response()->json($user->todos);
+        $todos = TodoService::getMyTodos();
+        return response()->json($todos);
     }
     
     /**
@@ -36,10 +35,13 @@ class TodoController extends Controller
      */
     public function store(StoreTodoRequest $request)
     {
-        $validated = $request->validated();
-        $todo = Todo::create($validated + ['user_id' => Auth::user()->id, 'completed' => false]);
-        $todo->save();
-        return response()->json('Successfully created todo!');
+        try {
+            $validated = $request->validated();
+            TodoService::addNewTodo($validated);
+            return response()->json('Successfully created todo!');
+        } catch (Exception $e) {
+            return response()->json('Something went wrong with the request.', 400);
+        }
     }
 
     /**
@@ -48,10 +50,9 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ShowTodoRequest $request, $id)
+    public function show(ShowTodoRequest $request, $todo)
     {
-        $todo = Todo::all()->find($id);
-        return response()->json($todo);
+        return response()->json(TodoService::getTodo($todo));
     }
 
     /**
@@ -63,14 +64,13 @@ class TodoController extends Controller
      */
     public function update(UpdateTodoRequest $request, $todo)
     {
-        $validated = $request->validated();
-        $todo = Todo::all()->find($todo);
-        $todo->title = $validated['title'];
-        $todo->description = $validated['description'];
-        $todo->priority = $validated['priority'];
-        $todo->completed = $validated['completed'];
-        $todo->save();
-        return response()->json('Successfully edited');
+        try {
+            $validated = $request->validated();
+            TodoService::updateTodo($validated, $todo);
+            return response()->json('Successfully edited.');
+        } catch (Exception $e) {
+            return response()->json('Something went wrong with the request.', 400);
+        }
     }
 
     /**
@@ -79,10 +79,13 @@ class TodoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DeleteTodoRequest $request, $id)
+    public function destroy(DeleteTodoRequest $request, $todo)
     {
-        $todo = Todo::all()->find($id);
-        $todo->delete();
-        return response()->json('Successfully deleted!');
+        try {
+            TodoService::deleteTodo($todo);
+            return response()->json('Successfully deleted.');
+        } catch (Exception $e) {
+            return response()->json('Something went wrong with the request.', 400);
+        }
     }
 }
