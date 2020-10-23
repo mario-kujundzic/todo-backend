@@ -32,7 +32,7 @@ class UpdateTodoRequest extends FormRequest
         return [
             'todo' => 'required|exists:todos,id',
             'title' => 'required|max:255',
-            'description' => 'required|max:255',
+            'description' => 'max:255',
             'priority' => 'required|integer',
             'completed' => 'required|boolean'
         ];

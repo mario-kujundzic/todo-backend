@@ -66,8 +66,8 @@ class TodoController extends Controller
     {
         try {
             $validated = $request->validated();
-            TodoService::updateTodo($validated, $todo);
-            return response()->json('Successfully edited.');
+            $updated = TodoService::updateTodo($validated, $todo);
+            return response()->json($updated);
         } catch (Exception $e) {
             return response()->json('Something went wrong with the request.', 400);
         }

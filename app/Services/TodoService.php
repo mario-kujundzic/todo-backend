@@ -34,6 +34,7 @@ class TodoService
         $todo->priority = $data['priority'];
         $todo->completed = $data['completed'];
         $todo->save();
+        return $todo;
     }
 
     public static function deleteTodo($id) 
