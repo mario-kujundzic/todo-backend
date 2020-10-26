@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginAuthRequest;
+use App\Http\Requests\Auth\RegisterAuthRequest;
+use App\Services\UserService;
 
 class AuthController extends Controller
 {
@@ -31,6 +33,15 @@ class AuthController extends Controller
         }
         $user = auth()->user()->name;
         return $this->respondWithToken($token, $user);
+    }
+
+
+    public function register(RegisterAuthRequest $request)
+    {
+        $credentials = $request->validated();
+        $user = UserService::registerUser($credentials);
+        $token = Auth::login($user);
+        return $this->respondWithToken($token, $user->name);
     }
 
     /**
