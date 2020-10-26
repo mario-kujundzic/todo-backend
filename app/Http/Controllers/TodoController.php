@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Todo\CompleteTodoRequest;
 use App\Http\Requests\Todo\DeleteTodoRequest;
 use App\Http\Requests\Todo\ShowTodoRequest;
 use App\Http\Requests\Todo\StoreTodoRequest;
@@ -68,6 +69,17 @@ class TodoController extends Controller
             $validated = $request->validated();
             $updated = TodoService::updateTodo($validated, $todo);
             return response()->json($updated);
+        } catch (Exception $e) {
+            return response()->json('Something went wrong with the request.', 400);
+        }
+    }
+
+    public function complete(CompleteTodoRequest $request, $todo)
+    {
+        try {
+            $validated = $request->validated();
+            $completed = TodoService::completeTodo($validated, $todo);
+            return response()->json($completed);
         } catch (Exception $e) {
             return response()->json('Something went wrong with the request.', 400);
         }

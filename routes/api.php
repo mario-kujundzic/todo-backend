@@ -30,4 +30,7 @@ Route::group([
     'middleware' => 'api'
 ], function ($router) {
     Route::resource('todos', TodoController::class);
+    Route::put('todos/{todo}/complete', [TodoController::class, 'complete']);
 });
+
+

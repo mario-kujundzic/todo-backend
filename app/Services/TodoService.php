@@ -37,6 +37,15 @@ class TodoService
         return $todo;
     }
 
+    public static function completeTodo($data, $id)
+    {
+        $todo = Todo::all()->find($id);
+        $todo->completed = $data['completed'];
+        $todo->save();
+        return $todo;
+    }
+
+
     public static function deleteTodo($id) 
     {
         $todo = Todo::all()->find($id);

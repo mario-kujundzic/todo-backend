@@ -53,4 +53,11 @@ class TodoPolicy
                     : Response::deny('This Todo does not belong to you!');
     }
 
+    public function complete(User $user, Todo $todo)
+    {
+        return $user->id === $todo->user_id
+                    ? Response::allow()
+                    : Response::deny('This Todo does not belong to you!');
+    }
+
 }
