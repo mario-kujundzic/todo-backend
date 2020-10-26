@@ -19,6 +19,7 @@ class TodoService
     {
         $todo = Todo::create($data + ['user_id' => Auth::user()->id, 'completed' => false]);
         $todo->save();
+        return $todo;
     }
 
     public static function getTodo($id)

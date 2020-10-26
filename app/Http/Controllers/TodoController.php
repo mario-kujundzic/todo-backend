@@ -38,8 +38,8 @@ class TodoController extends Controller
     {
         try {
             $validated = $request->validated();
-            TodoService::addNewTodo($validated);
-            return response()->json('Successfully created todo!');
+            $created = TodoService::addNewTodo($validated);
+            return response()->json($created);
         } catch (Exception $e) {
             return response()->json('Something went wrong with the request.', 400);
         }
